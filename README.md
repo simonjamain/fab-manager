@@ -46,7 +46,7 @@ FabManager is a Ruby on Rails / AngularJS web application that runs on the follo
 - Git 1.9.1+
 - Redis 2.8.4+
 - Sidekiq 3.3.4+
-- Elasticsearch 1.7
+- Elasticsearch 5.6
 - PostgreSQL 9.4
 
 <a name="contributing"></a>
@@ -145,9 +145,7 @@ This procedure is not easy to follow so if you don't need to write some code for
 
 11. You should now be able to access your local development FabManager instance by accessing `http://localhost:3000` in your web browser.
 
-12. You can login as the default administrator using the following credentials:
-    - user: admin@fab-manager.com
-    - password: adminadmin
+12. You can login as the default administrator using the credentials defined previously.
 
 13. Email notifications will be caught by MailCatcher.
     To see the emails sent by the platform, open your web browser at `http://localhost:1080` to access the MailCatcher interface.
@@ -494,30 +492,38 @@ In FabManager, it is used for the admin's statistics module and to perform searc
 
 For a more detailed guide concerning the ElasticSearch installation, please check the [official documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html)
 
-1. Install the OpenJDK's Java Runtime Environment (JRE). ElasticSearch recommends that you install Java 8 update 20 or later.
-   Please check that your distribution's version meet this requirement.
+1. Install the OpenJDK's Java Runtime Environment (JRE). ElasticSearch recommends that you install Java 8 update 131 or later.
+   Please check that your distribution's version meet this requirement. 
+   Using Ubuntu 14.04, see https://askubuntu.com/a/944260. With other systems, use the following command
 
   ```bash
   sudo apt-get install openjdk-8-jre
   ```
+  
+2. Install HTTPS support for aptitude
+  ```bash
+  sudo apt-get install apt-transport-https
+  ```
 
-1. Create the file `/etc/apt/sources.list.d/elasticsearch-1.x.list`, and append it the following line:
-   `deb http://packages.elastic.co/elasticsearch/1.x/debian stable main`
+3. Create the repository definition file
+   ```bash
+   echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+   ```
 
-2. Import the repository signing key, and update the package lists
+4. Import the repository signing key, and update the package lists
 
    ```bash
    wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
    sudo apt-get update
    ```
 
-3. Install ElasticSearch 1.7
+5. Install ElasticSearch 5.6
 
    ```bash
    sudo apt-get install elasticsearch
    ```
 
-4. To automatically start ElasticSearch during bootup, then, depending if your system is compatible with SysV (eg. Ubuntu 14.04) or uses systemd (eg. Debian 8+/Ubuntu 16.04+), you will need to run:
+6. To automatically start ElasticSearch during bootup, then, depending if your system is compatible with SysV (eg. Ubuntu 14.04) or uses systemd (eg. Debian 8+/Ubuntu 16.04+), you will need to run:
 
    ```bash
    # System V
@@ -527,7 +533,7 @@ For a more detailed guide concerning the ElasticSearch installation, please chec
    sudo /bin/systemctl enable elasticsearch.service
    ```
 
-5. Restart the host operating system to complete the installation
+7. Restart the host operating system to complete the installation
 
    ```bash
    sudo reboot
@@ -541,7 +547,7 @@ Otherwise, please follow the official instructions on the project's website.
 
 ```bash
 brew update
-brew install homebrew/versions/elasticsearch17
+brew install elasticsearch@5.6
 ```
 
 <a name="setup-fabmanager-in-elasticsearch"></a>
@@ -680,7 +686,7 @@ See `vendor/assets/components/fullcalendar/dist/lang/*.js` for a list of availab
     ELASTICSEARCH_LANGUAGE_ANALYZER
 
 This configure the language analyzer for indexing and searching in projects with ElasticSearch.
-See https://www.elastic.co/guide/en/elasticsearch/reference/1.7/analysis-lang-analyzer.html for a list of available analyzers (check that the doc version match your installed elasticSearch version).
+See https://www.elastic.co/guide/en/elasticsearch/reference/5.6/analysis-lang-analyzer.html for a list of available analyzers.
 
     TIME_ZONE
 
@@ -809,7 +815,7 @@ Developers may find information on how to implement their own authentication pro
 - [Ruby on Rails](http://api.rubyonrails.org)
 - [AngularJS](https://docs.angularjs.org/api)
 - [Angular-Bootstrap](http://angular-ui.github.io/bootstrap/)
-- [ElasticSearch 1.7](https://www.elastic.co/guide/en/elasticsearch/reference/1.7/index.html)
+- [ElasticSearch 5.6](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/index.html)
 
 
 ---
